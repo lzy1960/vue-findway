@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "^1.1.7",
+    "@lzy1960/eslint-config": "^0.0.6",
+    "@lzy1960/eslint-config-basic": "^0.0.6",
+    "@lzy1960/eslint-config-vue": "^0.0.6",
+    "@nuxtjs/color-mode": "^3.1.4",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "@unocss/nuxt": "^0.45.13",
+    "@unocss/preset-icons": "^0.45.14",
+    "@vueuse/core": "^9.1.1",
+    "@vueuse/nuxt": "^9.1.1",
+    "eslint": "^8.23.0",
+    "eslint-plugin-vue": "^9.4.0",
+    "nuxt": "3.0.0-rc.8",
+    "sass": "^1.54.7",
+    "unocss": "^0.45.13"
+  }
+}
