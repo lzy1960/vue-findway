@@ -14,7 +14,7 @@
     "@lzy1960/eslint-config-vue": "^0.0.6",
     "@nuxtjs/color-mode": "^3.1.4",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.2",
     "@unocss/nuxt": "^0.45.13",
     "@unocss/preset-icons": "^0.45.14",
     "@vueuse/core": "^9.1.1",
