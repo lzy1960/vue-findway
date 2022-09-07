@@ -1,36 +1,45 @@
 <template>
   <div class="bfs">
-    <button btn mx-1 @click="findPath(start, end)">
-      <div btn-icon i-carbon-play />
-      start
-    </button>
-    <button btn mx-1 @click="saveMap()">
-      <div btn-icon i-carbon-save />
-      save map
-    </button>
-    <button btn mx-1 @click="getMap()">
-      <div btn-icon i-carbon-arrow-down />
-      get map
-    </button>
-    <button btn mx-1 @click="resetMap()">
-      <div btn-icon i-carbon-restart />
-      reset map
-    </button>
-    <button btn mx-1 bg-gray :class="isDebug ? 'bg-red' : ''" @click="isDebug = !isDebug">
-      <div btn-icon i-carbon-debug />
-    </button>
-    <div :ref="el => mainEl = el" class="main" mt-10>
-      <div v-for="_, y in HEIGHT" :key="y" h-5>
-        <div
-          v-for="__, x in WIDTH" :key="`${x}_${y}`" inline-block w-5 h-5 bg-gray-7 bg-op-30 vertical-top text-center
-          cursor-pointer border border-dark hover:bg-op-80 :class="divClass(x, y)"
-          @mousedown="mousedown = true; setWall(x, y)" @mousemove="setWall(x, y)"
-          @contextmenu.prevent="delCurWall(x, y)" @mouseup="mousedown = false"
-        >
-          {{ content(x, y) }}
+    <div class="control" mb-2>
+      <button btn mx-1 @click="findPath(start, end)">
+        <div btn-icon i-carbon-play />
+        Start
+      </button>
+      <button btn mx-1 @click="saveMap()">
+        <div btn-icon i-carbon-save />
+        Save Map
+      </button>
+      <button btn mx-1 @click="getMap()">
+        <div btn-icon i-carbon-arrow-down />
+        Get Map
+      </button>
+      <button btn mx-1 @click="resetMap()">
+        <div btn-icon i-carbon-restart />
+        Reset Map
+      </button>
+    </div>
+    <div class="debug-control">
+      <span mr-1>Delay</span>
+      <input v-model="delay" type="number" :step="200" :min="10" :max="3000" :disabled="!isDebug">
+      <button btn mx-1 bg-gray :class="isDebug ? 'bg-red' : ''" @click="isDebug = !isDebug">
+        <div btn-icon i-carbon-debug />
+        Debug Status
+      </button>
+    </div>
+    <transition>
+      <div :ref="el => mainEl = el" class="main" mt-10>
+        <div v-for="_, y in HEIGHT" :key="y" h-5>
+          <div
+            v-for="__, x in WIDTH" :key="`${x}_${y}`" inline-block w-5 h-5 bg-gray-7 bg-op-30 vertical-top text-center
+            cursor-pointer border border-dark hover:bg-op-80 transition-200 :class="divClass(x, y)"
+            @mousedown="mousedown = true; setWall(x, y)" @mousemove="setWall(x, y)"
+            @contextmenu.prevent="delCurWall(x, y)" @mouseup="mousedown = false"
+          >
+            {{ content(x, y) }}
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -81,6 +90,7 @@ const DEFAULT_MAP: () => Point[][] = () => Array(HEIGHT.value).fill(0).map(v => 
 
 // used variable
 const isDebug = ref(true)
+const delay = ref(100)
 const map = ref([])
 const start: Point = [2, 2]
 const end: Point = [20, 15]
@@ -157,7 +167,7 @@ const findPath = async (start: Point, end: Point) => {
     // 越界
     if (x < 0 || x >= WIDTH.value || y < 0 || y >= HEIGHT.value || table[y][x] || map.value[y][x]) return
     if(isDebug.value) {
-      await sleep(1)
+      await sleep(delay.value)
     }
     table[y][x] = pre
     setCurValue(x, y, 1)
@@ -175,7 +185,7 @@ const findPath = async (start: Point, end: Point) => {
         y = b
         path.push(map.value[y][x])
         if(isDebug.value) {
-          await sleep(1)
+          await sleep(delay.value)
         }
         setCurValue(x, y, 2)
       }
