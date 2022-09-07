@@ -1,24 +1,31 @@
 <template>
   <div class="bfs">
-    <button @click="findPath(start, end)">
+    <button btn mx-1 @click="findPath(start, end)">
+      <div btn-icon i-carbon-play />
       start
     </button>
-    <button @click="saveMap()">
+    <button btn mx-1 @click="saveMap()">
+      <div btn-icon i-carbon-save />
       save map
     </button>
-    <button @click="getMap()">
+    <button btn mx-1 @click="getMap()">
+      <div btn-icon i-carbon-arrow-down />
       get map
     </button>
-    <button @click="resetMap()">
+    <button btn mx-1 @click="resetMap()">
+      <div btn-icon i-carbon-restart />
       reset map
     </button>
-    <div :ref="el => mainEl = el" class="main">
+    <button btn mx-1 bg-gray :class="isDebug ? 'bg-red' : ''" @click="isDebug = !isDebug">
+      <div btn-icon i-carbon-debug />
+    </button>
+    <div :ref="el => mainEl = el" class="main" mt-10>
       <div v-for="_, y in HEIGHT" :key="y" h-5>
         <div
           v-for="__, x in WIDTH" :key="`${x}_${y}`" inline-block w-5 h-5 bg-gray-7 bg-op-30 vertical-top text-center
           cursor-pointer border border-dark hover:bg-op-80 :class="divClass(x, y)"
-          @mousedown="mousedown = true; setWall(map, x, y)" @mousemove="setWall(map, x, y)"
-          @contextmenu.prevent="delCurWall(map, x, y)" @mouseup="mousedown = false"
+          @mousedown="mousedown = true; setWall(x, y)" @mousemove="setWall(x, y)"
+          @contextmenu.prevent="delCurWall(x, y)" @mouseup="mousedown = false"
         >
           {{ content(x, y) }}
         </div>
@@ -73,13 +80,16 @@ const DEFAULT_MAP: () => Point[][] = () => Array(HEIGHT.value).fill(0).map(v => 
 
 
 // used variable
+const isDebug = ref(true)
 const map = ref([])
 const start: Point = [2, 2]
 const end: Point = [20, 15]
 const mousedown = ref(false)
+const isStart = (x: number, y: number) => x === start[0] && y === start[1]
+const isEnd = (x: number, y: number) => x === end[0] && y === end[1]
 const content = (x: number, y: number) => {
-  if (x === start[0] && y === start[1]) return 'S'
-  if (x === end[0] && y === end[1]) return 'E'
+  if (isStart(x, y)) return 'S'
+  if (isEnd(x, y)) return 'E'
   return map[y]?.[x] || ''
 }
 
@@ -98,13 +108,14 @@ const divClass = (x: number, y: number) => {
 const mainEl = ref()
 
 // wall methods
-const setWall = (map: Point[], x: number, y: number) => {
+const setWall = (x: number, y: number) => {
+  if(isStart(x, y) || isEnd(x, y)) return
   if (mousedown.value) {
-    map[y][x] = 3
+    setCurValue(x, y, 3)
   }
 }
-const delCurWall = (map: Point[], x: number, y: number) => {
-  map[y][x] = 0
+const delCurWall = (x: number, y: number) => {
+  setCurValue(x, y, 0)
 }
 
 // map methods
@@ -145,7 +156,9 @@ const findPath = async (start: Point, end: Point) => {
   async function insert (x: number, y: number, pre: Point) {
     // 越界
     if (x < 0 || x >= WIDTH.value || y < 0 || y >= HEIGHT.value || table[y][x] || map.value[y][x]) return
-    await sleep(1)
+    if(isDebug.value) {
+      await sleep(1)
+    }
     table[y][x] = pre
     setCurValue(x, y, 1)
     queue.give([x, y])
@@ -161,16 +174,25 @@ const findPath = async (start: Point, end: Point) => {
         x = a
         y = b
         path.push(map.value[y][x])
-        await sleep(1)
+        if(isDebug.value) {
+          await sleep(1)
+        }
         setCurValue(x, y, 2)
       }
       return path
     }
     const cur: Point = [x, y]
-    await insert(x, y - 1, cur)
-    await insert(x, y + 1, cur)
-    await insert(x - 1, y, cur)
-    await insert(x + 1, y, cur)
+    if(isDebug.value) {
+      await insert(x, y - 1, cur)
+      await insert(x, y + 1, cur)
+      await insert(x - 1, y, cur)
+      await insert(x + 1, y, cur)
+    } else {
+      insert(x, y - 1, cur)
+      insert(x, y + 1, cur)
+      insert(x - 1, y, cur)
+      insert(x + 1, y, cur)
+    }
   }
   return null
 }
