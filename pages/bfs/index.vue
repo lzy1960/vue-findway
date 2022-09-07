@@ -18,12 +18,26 @@
         Reset Map
       </button>
     </div>
-    <div class="debug-control">
+    <div class="debug-control" mb-1>
       <span mr-1>Delay</span>
       <input v-model="delay" type="number" :step="200" :min="10" :max="3000" :disabled="!isDebug">
       <button btn mx-1 bg-gray :class="isDebug ? 'bg-red' : ''" @click="isDebug = !isDebug">
         <div btn-icon i-carbon-debug />
         Debug Status
+      </button>
+    </div>
+    <div class="position-control">
+      <button btn mx-1 :class="isSettingStart ? '' : 'bg-gray'" @click="toggleSetPointStatus('start')">
+        <div btn-icon i-carbon-battery-full />
+        Set Start Point
+      </button>
+      <button btn mx-1 :class="isSettingEnd ? '' : 'bg-gray'" @click="toggleSetPointStatus('end')">
+        <div btn-icon i-carbon-battery-empty />
+        Set End Point
+      </button>
+      <button btn mx-1 :class="!isSettingStart && !isSettingEnd ? '' : 'bg-gray'" @click="toggleSetPointStatus('wall')">
+        <div btn-icon i-carbon-assembly-cluster />
+        Make Walls
       </button>
     </div>
     <transition>
@@ -32,7 +46,7 @@
           <div
             v-for="__, x in WIDTH" :key="`${x}_${y}`" inline-block w-5 h-5 bg-gray-7 bg-op-30 vertical-top
             text-center cursor-pointer border border-dark hover:bg-op-80 transition-200 :class="divClass(x, y)"
-            @mousedown="mousedown = true; setWall(x, y)" @mousemove="setWall(x, y)"
+            @mousedown="mousedown = true; setDiv(x, y)" @mousemove="setWall(x, y)"
             @contextmenu.prevent="delCurWall(x, y)" @mouseup="mousedown = false"
           >
             {{ content(x, y) }}
@@ -45,6 +59,8 @@
 
 <script lang="ts" setup>
 import { useStorage } from '@vueuse/core'
+import { isSet } from 'util/types'
+import { Ref } from 'vue'
 
 // types
 type Point = [number, number]
@@ -89,19 +105,24 @@ const DEFAULT_MAP: () => Point[][] = () => Array(HEIGHT.value).fill(0).map(v => 
 
 
 // used variable
+const isSettingStart = ref(false)
+const isSettingEnd = ref(false)
 const isDebug = ref(true)
 const delay = ref(100)
 const map = ref([])
-const start: Point = [2, 2]
-const end: Point = [20, 15]
+const start: Ref<Point> = ref([2, 2] as Point)
+const end: Ref<Point> = ref([20, 15] as Point)
 const mousedown = ref(false)
-const isStart = (x: number, y: number) => x === start[0] && y === start[1]
-const isEnd = (x: number, y: number) => x === end[0] && y === end[1]
+const isStart = (x: number, y: number) => x === start.value[0] && y === start.value[1]
+const isEnd = (x: number, y: number) => x === end.value[0] && y === end.value[1]
 const content = (x: number, y: number) => {
   if (isStart(x, y)) return 'S'
   if (isEnd(x, y)) return 'E'
   return map[y]?.[x] || ''
 }
+const isMakingWalls = computed(() => {
+  return !isSettingStart.value && !isSettingEnd.value
+})
 
 // 0 空地
 // 1 扫描过的路
@@ -119,7 +140,7 @@ const mainEl = ref()
 
 // wall methods
 const setWall = (x: number, y: number) => {
-  if (isStart(x, y) || isEnd(x, y)) return
+  if (isStart(x, y) || isEnd(x, y) || !isMakingWalls.value) return
   if (mousedown.value) {
     setCurValue(x, y, 3)
   }
@@ -143,6 +164,39 @@ const resetMap = () => {
 }
 const setCurValue = (x: number, y: number, value: number) => {
   map.value[y][x] = value
+}
+
+// set point methods
+const toggleSetPointStatus = (type: string) => {
+  switch (type) {
+  case 'start':
+    isSettingStart.value = !isSettingStart.value
+    isSettingEnd.value = false
+    break
+  case 'end':
+    isSettingStart.value = false
+    isSettingEnd.value = !isSettingEnd.value
+    break
+  default:
+    isSettingStart.value = false
+    isSettingEnd.value = false
+    break
+  }
+}
+const setStartOrEnd = (x: number, y: number) => {
+  if (isSettingStart.value) {
+    start.value = [x, y]
+  } else if (isSettingEnd.value) {
+    end.value = [x, y]
+  }
+}
+// 修改某个方块的状态
+const setDiv = (x: number, y: number) => {
+  if (!isMakingWalls.value) {
+    setStartOrEnd(x, y)
+  } else {
+    setWall(x, y)
+  }
 }
 
 // resetMap when init
