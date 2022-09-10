@@ -8,7 +8,7 @@ Vue Bfs Visual
 <a href="https://vue3-findway.netlify.app/bfs">DEMO</a>
 </p>
 <p align="center">
-<img src="https://user-images.githubusercontent.com/40552111/189466368-f6897b66-571f-4203-8ca1-889e5d719522.png" width="600"/>
+<img src="https://user-images.githubusercontent.com/40552111/189466594-4ed5a582-501d-4278-aceb-ce8b6496fbbd.png" width="600"/>
 </p>
 
 ## 技术栈
