@@ -40,26 +40,24 @@
         Make Walls
       </button>
     </div>
-    <transition>
-      <div :ref="el => mainEl = el" class="main" mt-10>
-        <div v-for="_, y in HEIGHT" :key="y" h-5>
-          <div
-            v-for="__, x in WIDTH" :key="`${x}_${y}`" inline-block w-5 h-5 bg-gray-7 bg-op-30 vertical-top
-            text-center cursor-pointer border border-dark hover:bg-op-80 transition-200 :class="divClass(x, y)"
-            @mousedown="mousedown = true; setDiv(x, y)" @mousemove="setWall(x, y)"
-            @contextmenu.prevent="delCurWall(x, y)" @mouseup="mousedown = false"
-          >
-            {{ content(x, y) }}
-          </div>
+    <Legends />
+    <div :ref="el => mainEl = el" class="main" mt-5>
+      <div v-for="_, y in HEIGHT" :key="y" h-5>
+        <div
+          v-for="__, x in WIDTH" :key="`${x}_${y}`" inline-block w-5 h-5 bg-gray-7 bg-op-30 vertical-top text-center
+          cursor-pointer border border-dark hover:bg-op-80 transition-200 :class="divClass(x, y)"
+          @mousedown="mousedown = true; setDiv(x, y)" @mousemove="setWall(x, y)" @contextmenu.prevent="delCurWall(x, y)"
+          @mouseup="mousedown = false"
+        >
+          {{ content(x, y) }}
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useStorage } from '@vueuse/core'
-import { isSet } from 'util/types'
 import { Ref } from 'vue'
 
 // types
@@ -263,4 +261,5 @@ const findPath = async (start: Point, end: Point) => {
 </script>
 
 <style lang='scss' scoped>
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div text="xl gray4" m-5 flex justify-center gap-3>
     <NuxtLink i-carbon-campsite to="/" />
-    <a i-carbon-logo-github href="https://github.com/antfu/vitesse-nuxt3" target="_blank" />
+    <a i-carbon-logo-github href="https://github.com/lzy1960/vue-bfs" target="_blank" />
     <DarkToggle />
   </div>
 </template>
