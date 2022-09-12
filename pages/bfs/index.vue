@@ -116,7 +116,9 @@ const isEnd = (x: number, y: number) => x === end.value[0] && y === end.value[1]
 const content = (x: number, y: number) => {
   if (isStart(x, y)) return 'S'
   if (isEnd(x, y)) return 'E'
-  return map[y]?.[x] || ''
+  if (map.value[y][x] === 1) return '·'
+  if (map.value[y][x] === 3) return '×'
+  return ''
 }
 const isMakingWalls = computed(() => {
   return !isSettingStart.value && !isSettingEnd.value
