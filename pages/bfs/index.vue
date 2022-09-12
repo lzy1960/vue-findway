@@ -211,8 +211,7 @@ function sleep (t: number) {
 const findPath = async (start: Point, end: Point) => {
   const table = DEFAULT_MAP()
   const distance = (point: Point) => {
-    return Math.abs(point[0] - end[0]) + Math.abs(point[1] - end[1])
-    // return (point[0] - end[0]) ** 2 + (point[1] - end[1]) ** 2
+    return (point[0] - end[0]) ** 2 + (point[1] - end[1]) ** 2
   }
   const queue = new Sorted([start], (a, b) => distance(a) - distance(b))
   async function insert (x: number, y: number, pre: Point) {
