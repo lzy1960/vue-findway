@@ -9,6 +9,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
   ],
   colorMode: {
-    classSuffix: ''
+    classSuffix: '',
   },
 })

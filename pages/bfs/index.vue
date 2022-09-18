@@ -169,18 +169,18 @@ const setCurValue = (x: number, y: number, value: number) => {
 // set point methods
 const toggleSetPointStatus = (type: string) => {
   switch (type) {
-  case 'start':
-    isSettingStart.value = !isSettingStart.value
-    isSettingEnd.value = false
-    break
-  case 'end':
-    isSettingStart.value = false
-    isSettingEnd.value = !isSettingEnd.value
-    break
-  default:
-    isSettingStart.value = false
-    isSettingEnd.value = false
-    break
+    case 'start':
+      isSettingStart.value = !isSettingStart.value
+      isSettingEnd.value = false
+      break
+    case 'end':
+      isSettingStart.value = false
+      isSettingEnd.value = !isSettingEnd.value
+      break
+    default:
+      isSettingStart.value = false
+      isSettingEnd.value = false
+      break
   }
 }
 const setStartOrEnd = (x: number, y: number) => {
@@ -204,7 +204,7 @@ resetMap()
 
 // delay to debug
 function sleep (t: number) {
-  return new Promise(function (resolve) {
+  return new Promise((resolve) => {
     setTimeout(resolve, t)
   })
 }
@@ -230,10 +230,10 @@ const findPath = async (start: Point, end: Point) => {
     let [x, y] = queue.take()
     // 到终点
     if (x === end[0] && y === end[1]) {
-      let path = []
+      const path = []
       while (x !== start[0] || y !== start[1]) {
         // [x, y] = table[y][x]
-        let [a, b] = table[y][x] as Point
+        const [a, b] = table[y][x] as Point
         x = a
         y = b
         path.push(map.value[y][x])
