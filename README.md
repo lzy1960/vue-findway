@@ -5,7 +5,7 @@ Vue Bfs Visual
 寻路算法的可视化展示
 </p>
 <p align="center">
-<a href="https://vue3-findway.netlify.app/bfs">DEMO</a>
+<a href="https://vue3-findway.netlify.app">DEMO</a>
 </p>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/40552111/189647470-41178be8-5ef9-4689-b79d-0c2e69aad394.gif" width="600"/>
