@@ -8,16 +8,16 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@iconify-json/carbon": "^1.1.17",
-    "@lzy1960/eslint-config": "^0.1.12",
-    "@nuxtjs/color-mode": "^3.2.0",
-    "@unocss/nuxt": "^0.45.30",
-    "@unocss/preset-icons": "^0.45.30",
-    "@vueuse/core": "^9.13.0",
-    "@vueuse/nuxt": "^9.13.0",
-    "eslint": "^8.42.0",
-    "nuxt": "^3.5.3",
-    "sass": "^1.56.1",
-    "unocss": "^0.45.30"
+    "@iconify-json/carbon": "^1.1.31",
+    "@lzy1960/eslint-config": "^0.2.2",
+    "@nuxtjs/color-mode": "^3.4.0",
+    "@unocss/nuxt": "^0.59.4",
+    "@unocss/preset-icons": "^0.59.4",
+    "@vueuse/core": "^10.9.0",
+    "@vueuse/nuxt": "^10.9.0",
+    "eslint": "^8.57.0",
+    "nuxt": "^3.11.2",
+    "sass": "^1.75.0",
+    "unocss": "^0.59.4"
   }
 }

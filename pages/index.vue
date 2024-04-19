@@ -157,8 +157,9 @@
           vertical-top
           text-center
           cursor-pointer
-          border
-          border-dark
+          b
+          b-dark
+          b-solid
           text-sm
           hover:bg-op-80
           transition-200
@@ -177,7 +178,7 @@
 
 <script lang="ts" setup>
 import { useStorage } from '@vueuse/core'
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 
 // types
 type Point = [number, number]
@@ -286,7 +287,7 @@ const getMap = () => {
   height.value = +localHeight.value
 }
 const resetMap = () => {
-  map.value = DEFAULT_MAP()
+  map.value = DEFAULT_MAP() as unknown as number[][];
 }
 const setCurValue = (x: number, y: number, value: number) => {
   if (!map.value[y]) {
@@ -356,7 +357,7 @@ const findPath = async (start: Point, end: Point) => {
     queue.give([x, y])
   }
   while (queue.length) {
-    let [x, y] = queue.take()
+    let [x, y] = queue.take()!
     // 到终点
     if (x === end[0] && y === end[1]) {
       const path = []
